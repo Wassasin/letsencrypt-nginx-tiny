@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+
+if [[ "$#" -lt "1" ]]; then
+	echo "Usage: $0 <domain name> [<alt names>]"
+	exit 0
+fi
+
+DOMAIN=$1
+DOMAINDIR="/etc/letsencrypt/keys/${DOMAIN}"
+
+mkdir -p "${DOMAINDIR}"
+openssl genrsa 4096 > "${DOMAINDIR}/cert.key"
+
+SUBJECTALTNAMES="DNS:${DOMAIN}"
+for CURRENT_DOMAIN in "${@:2}"
+do
+	SUBJECTALTNAMES="${SUBJECTALTNAMES},DNS:${CURRENT_DOMAIN}"
+done
+
+openssl req -new -sha256 -key "${DOMAINDIR}/cert.key" -subj "/" -reqexts SAN -config \
+	<( \
+		cat /etc/ssl/openssl.cnf \
+		<(printf "[SAN]\nsubjectAltName=${SUBJECTALTNAMES}") \
+	) \
+	> "${DOMAINDIR}/cert.csr"
+
+echo "${DOMAIN}" >> domains

@@ -1,0 +1,3 @@
+[submodule "contrib/acme-tiny"]
+	path = contrib/acme-tiny
+	url = https://github.com/diafygi/acme-tiny.git
