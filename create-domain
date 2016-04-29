@@ -9,6 +9,7 @@ fi
 DOMAIN=$1
 DOMAINDIR="/etc/letsencrypt/keys/${DOMAIN}"
 
+mkdir -p "/etc/letsencrypt/challenges"
 mkdir -p "${DOMAINDIR}"
 openssl genrsa 4096 > "${DOMAINDIR}/cert.key"
 
