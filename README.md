@@ -1,8 +1,3 @@
-# Dependencies
-```bash
-apt-get install gnutls-bin python
-```
-
 # Setup
 ```
 # Create a letsencrypt user
@@ -28,7 +23,18 @@ openssl genrsa 4096 > account.key
 
 # Prepare nginx for the challenges
 # <TODO>
+```
 
+```
+# Add sudo rule to enable letsencrypt to restart nginx
+visudo
+```
+
+```
+letsencrypt ALL=NOPASSWD: /usr/sbin/service nginx restart
+```
+
+```
 # Init+update domains (sign certificates via acme-tiny, prepare chains, and reboot)
 ./update_all
 

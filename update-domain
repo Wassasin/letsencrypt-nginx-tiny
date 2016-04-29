@@ -9,7 +9,7 @@ fi
 DOMAIN=$1
 DOMAINDIR="/etc/letsencrypt/keys/${DOMAIN}"
 
-python ~/contrib/acme-tiny/acme_tiny.py \
+python ~/bin/contrib/acme-tiny/acme_tiny.py \
 	--account-key /etc/letsencrypt/account.key \
 	--csr "${DOMAINDIR}/cert.csr" \
 	--acme-dir /etc/letsencrypt/challenges/ \
@@ -17,4 +17,3 @@ python ~/contrib/acme-tiny/acme_tiny.py \
 
 wget -O - https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem > "${DOMAINDIR}/intermediate.pem"
 cat "${DOMAINDIR}/signed.crt" "${DOMAINDIR}/intermediate.pem" > "${DOMAINDIR}/chained.pem"
-certtool --verify-chain < "${DOMAINDIR}/chained.pem"
